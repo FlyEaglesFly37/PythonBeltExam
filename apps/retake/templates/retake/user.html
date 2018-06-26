@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users Posts</title>
+    <style>
+    div {
+        border: 2px solid black;
+        width: 300px;
+        margin: 5px;
+        padding: 10px;
+    }
+    </style>
+</head>
+<body>
+    <h1>{{user.first_name}}'s Posts</h1>
+    {% for x in quotes %}
+    <div>
+        <p>"{{x.quote}}"</p>
+        <p>-{{x.author}}</p>
+        <p>Added on {{x.created_at}}</p>
+    </div>
+    {% endfor %}
+    <a href='home'>Go Back</a> | <a href='/logout'>Logout</a>
+
+</body>
+</html>

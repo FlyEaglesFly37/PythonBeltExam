@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quotes Home</title>
+    <style>
+    .left {
+        display: inline-block;
+    }
+    .quotes {
+        border: 1px solid black;
+        width: 300px;
+        padding: 15px;
+    }
+    .add_quote {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 150px;
+    }
+    </style>
+</head>
+<body>
+    <h3>Welcome {{user.first_name}} {{user.last_name}}!</h3>
+    <a href='/edit/{{user.id}}'>Edit My Account</a> | <a href='/logout'>Logout</a>
+    <h3>Quotes</h3>
+    <div class='left'>
+        {% for x in quotes %}
+        <div class='quotes'>
+            <p>"{{x.quote}}"</p>
+            <p>-{{x.author}}</p>
+            <p>Posted by <a href='user/{{x.uploader.id}}'>{{x.uploader.first_name}}</a></p>
+            <p>{{x.liked_by.count}} people like this </p>
+            <form action='/like' method='post'>
+                {% csrf_token %}
+                <input type='hidden' name='quote_id' value='{{x.id}}'>
+                <input type='submit' value='Like'>
+            </form>
+            {% if request.session.user_id == x.uploader.id %}
+            <p><a href='/delete/{{x.id}}'>Delete</a></p>
+            {% endif%}
+        </div>
+        {% endfor %}
+    </div>
+    <div class='add_quote'>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form action='/post' method='post'> 
+            {% csrf_token %}
+            <h3>Add a Quote!</h3>
+            <p>Author: <input type='text' name='author'></p>
+            <p>Quote:</p> 
+            <textarea rows='5' cols='30' name='desc'></textarea>
+            <input type='submit' value='Submit'>
+        </form>
+    </div>
+</body>
+</html>
